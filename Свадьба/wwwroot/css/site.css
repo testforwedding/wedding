@@ -1,0 +1,88 @@
+/* Базовые сбросы под полноэкранный фон */
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    overflow-x: hidden; /* чтобы не дрожала прокрутка из-за слоёв */
+    background: #000;   /* цвет-заполнитель под изображения */
+}
+
+/* Контейнер параллакса покрывает высоту экрана; слои абсолютные */
+.parallax {
+    position: fixed;             /* фиксируем на фоне, под контентом */
+    inset: 0;                    /* топ/право/низ/лево = 0 */
+    perspective: 1200px;         /* лёгкая перспектива для translateZ */
+    transform-style: preserve-3d;
+    z-index: -1;                 /* фон ниже контента */
+}
+
+/* Каждый слой — это фоновая картинка на блочном элементе */
+.parallax__layer {
+    position: absolute;
+    top: -50%; /* верхний запас */
+    left: -10vw;
+    right: -10vw;
+    bottom: -10vh; /* нижний запас */
+    background-repeat: no-repeat;
+    background-size: cover; /* растягиваем по экрану, обрезка неизбежна */
+    background-position: 50% 60%;
+    will-change: transform;
+    pointer-events: none;
+    filter: saturate(1.05);
+}
+
+
+/* Контент-приглашение */
+.invite {
+    min-height: 160vh;           /* больше 100vh, чтобы была прокрутка и, соответственно, эффект */
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 6rem 1.25rem;
+    color: #fff;
+    /* Лёгкая подложка для читабельности текста */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.8));
+}
+
+.invite__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: 1px;
+    margin: 0 0 0.5rem 0;
+}
+.invite__text {
+    font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+    margin: 0 0 1.5rem 0;
+}
+.invite__details {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    font-size: 1.15rem;
+}
+.invite__details li + li {
+    margin-top: 0.35rem;
+}
+
+.invite__cta {
+    display: inline-block;
+    padding: 0.9rem 1.4rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+.invite__cta:hover { transform: translateY(-2px); background: rgba(255,255,255,0.25); }
+
+.invite__rsvp {
+    margin-top: 4rem;
+}
+
+
+/* Уважение системной настройки «уменьшить анимацию» */
+@media (prefers-reduced-motion: reduce) {
+    .parallax__layer { transform: none !important; }
+}
